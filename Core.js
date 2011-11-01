@@ -31,14 +31,14 @@ var TiO2 = (function (global) {
 		return object;
 	}
 
-	function inherit(baseConstructor, newPrototype) {
+	function extend(baseConstructor, newPrototype) {
 		var tmp = function () {};
 		tmp.prototype = baseConstructor.prototype;
 		var constructor = newPrototype.hasOwnProperty('constructor') ? newPrototype.constructor : function () { baseConstructor.apply(this, arguments); };
 		constructor.prototype = new tmp();
 		constructor.prototype.constructor = constructor;
 		constructor.baseConstructor = baseConstructor;
-		constructor.inherit = function (newPrototype) { return inherit(this, newPrototype); };
+		constructor.extend = function (newPrototype) { return extend(this, newPrototype); };
 		mixin(constructor.prototype, newPrototype)
 		return constructor;
 	}
@@ -236,7 +236,7 @@ var TiO2 = (function (global) {
 		return ref && ref.$signalMarker === signalMarker;
 	}
 
-	var Base = inherit(Object, {
+	var Base = extend(Object, {
 		isA:function (constructor) {
 			var p = this.constructor;
 
@@ -256,7 +256,7 @@ var TiO2 = (function (global) {
 		return object ? (object.isA ? object.isA(constructor) : object.constructor === constructor) : false;
 	}
 
-	var Component = Base.inherit({
+	var Component = Base.extend({
 		signals:[],
 
 		constructor:function (options) {
@@ -288,7 +288,7 @@ var TiO2 = (function (global) {
 		}
 	});
 
-	var Widget = Component.inherit({
+	var Widget = Component.extend({
 		constructor:function (options) {
 			var self = this;
 			Component.call(this, options);
@@ -318,7 +318,7 @@ var TiO2 = (function (global) {
 		}
 	});
 
-	var Associations = Base.inherit({
+	var Associations = Base.extend({
 		list:null,
 
 		constructor:function () {
@@ -351,7 +351,7 @@ var TiO2 = (function (global) {
 		}
 	});
 
-	var Navigator = Component.inherit({
+	var Navigator = Component.extend({
 		windowToTab:null,
 		tabToTabGroup:null,
 		windowToStacked:null,
@@ -506,7 +506,7 @@ var TiO2 = (function (global) {
 		}
 	});
 
-	var Application = Component.inherit({
+	var Application = Component.extend({
 		constructor:function (options) {
 			Component.call(this, options);
 			this.windows = {};
@@ -519,7 +519,7 @@ var TiO2 = (function (global) {
 	return {
 		merge:merge,
 		mixin:mixin,
-		inherit:inherit,
+		extend:extend,
 		signal:signal,
 		isSignal:isSignal,
 		Base:Base,
