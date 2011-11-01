@@ -51,7 +51,8 @@ var TiO2 = (function (global) {
 				items = [],
 				listeners = {},
 				instance,
-				context = contexts.length && contexts[contexts.length - 1];
+				context = contexts.length && contexts[contexts.length - 1],
+				refAs = null;
 
 			if (options.hasOwnProperty('items')) {
 				items = options.items;
@@ -68,6 +69,11 @@ var TiO2 = (function (global) {
 				delete options.listeners;
 			}
 
+			if (options.hasOwnProperty('refAs')) {
+				refAs = options.refAs;
+				delete options.refAs;
+			}
+
 			instance = constructor(options);
 			
 			for (var i = 0; i < items.length; i++) {
@@ -78,6 +84,10 @@ var TiO2 = (function (global) {
 				if (listeners.hasOwnProperty(i)) {
 					instance.addEventListener(i, context && context.wrapListener ? context.wrapListener(listeners[i]) : listeners[i]);
 				}
+			}
+
+			if (context && context.registerReference) {
+				context.registerReference(refAs, instance);
 			}
 			
 			return instance;
@@ -303,6 +313,10 @@ var TiO2 = (function (global) {
 					return function (data) {
 						handler.call(self, data, this);
 					};
+				},
+
+				registerReference:function (name, ref) {
+					self[name] = ref;
 				}
 			});
 
