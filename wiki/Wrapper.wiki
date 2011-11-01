@@ -137,4 +137,4 @@ var WideBlueButton = BlueButton.extend({
 });
 }}}
 
-All of these basic (Window, Button) and derivative (BlueButton, WideBlueButton) return native Titanium object created via corresponding Ti.UI.createSomething function.
+All of these basic (Window, Button) and derivative (BlueButton, WideBlueButton) return native Titanium object created via corresponding Ti.UI.createSomething function. All of Ti.UI.createSomething functions have corresponding wrapper -- just remove "Ti.UI.create".
