@@ -94,7 +94,7 @@ var TiO2 = (function (global) {
 		};
 		
 		factory.extend = function (extendedOptions) {
-			return Wrapper(constructor, merge(defaultOptions, extendedOptions));
+			return wrap(constructor, merge(defaultOptions, extendedOptions));
 		};
 		
 		return factory;
